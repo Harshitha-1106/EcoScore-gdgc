@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>EcoScore 🌱</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- HEADER -->
+<nav class="navbar bg-white shadow-sm px-4">
+  <span class="navbar-brand fw-bold text-success">🌱 EcoScore</span>
+  <button class="btn btn-outline-success" onclick="startVoice()">🎤 Eco Assistant</button>
+</nav>
+
+<div class="container my-4">
+
+  <!-- SCORE CARD -->
+  <div class="score-card text-center mb-4">
+    <h2>Your Daily EcoScore</h2>
+
+    <div class="score-circle">
+      <span id="score">100</span>
+    </div>
+
+    <p id="feedback" class="fw-semibold mt-2">🌱 Eco Champion</p>
+
+    <button class="btn btn-success mt-2" onclick="saveProgress()">💾 Save Today's Progress</button>
+    <button class="btn btn-outline-danger mt-2" onclick="resetAll()">🔄 Reset</button>
+  </div>
+
+  <!-- STREAK CARD -->
+  <div class="mb-4">
+    <div class="streak-card">
+      <div class="d-flex align-items-center gap-2">
+        <span class="streak-icon">🔥</span>
+        <div>
+          <div class="streak-count">
+            <span id="streakDays">1</span> day Eco Streak
+          </div>
+          <small>Keep logging daily to grow your streak</small>
+        </div>
+      </div>
+
+      <div class="progress mt-2">
+        <div id="streakProgress" class="progress-bar"></div>
+      </div>
+
+      <small>Progress to 7-day streak</small>
+    </div>
+  </div>
+
+  <!-- TOP DASHBOARD ROW -->
+  <div class="row g-4 align-items-stretch">
+
+    <!-- TRANSPORT -->
+    <div class="col-md-4 d-flex">
+      <div class="card eco-card h-100 d-flex flex-column">
+        <h5>🚲 Transport Distance</h5>
+
+        <div class="vehicle mb-3">
+          <button class="btn btn-outline-success me-2" onclick="selectVehicle('lorry',this)">Lorry</button>
+          <button class="btn btn-outline-success me-2" onclick="selectVehicle('bike',this)">Bike</button>
+          <button class="btn btn-outline-success" onclick="selectVehicle('car',this)">Car</button>
+        </div>
+
+        <button id="useLocationBtn" class="btn btn-sm btn-outline-primary mb-2">
+          📍 Use Current Location
+        </button>
+
+        <!-- MAP -->
+        <div id="map" class="map-box mb-3"></div>
+
+        <div class="input-group mb-3">
+          <input id="destination" class="form-control" placeholder="Enter destination">
+          <button id="calcDistanceBtn" class="btn btn-outline-secondary">
+            Calculate Distance
+          </button>
+        </div>
+
+        <p id="impactText" class="fw-semibold text-secondary mt-auto">
+          Impact will be calculated after distance
+        </p>
+      </div>
+    </div>
+
+    <!-- PLASTIC -->
+    <div class="col-md-4 d-flex">
+      <div class="card eco-card h-100 d-flex flex-column">
+        <h5>♻ Plastic Items</h5>
+
+        <div class="plastic-grid">
+          <div class="plastic-card" data-impact="3">
+            🍟 Chips Wrapper
+            <div class="counter">
+              <button class="minus">−</button><span class="count">0</span><button class="plus">+</button>
+            </div>
+          </div>
+
+          <div class="plastic-card" data-impact="5">
+            🧴 Plastic Bottle
+            <div class="counter">
+              <button class="minus">−</button><span class="count">0</span><button class="plus">+</button>
+            </div>
+          </div>
+
+          <div class="plastic-card" data-impact="4">
+            🛍️ Plastic Bag
+            <div class="counter">
+              <button class="minus">−</button><span class="count">0</span><button class="plus">+</button>
+            </div>
+          </div>
+
+          <div class="plastic-card" data-impact="6">
+            📦 Plastic Box
+            <div class="counter">
+              <button class="minus">−</button><span class="count">0</span><button class="plus">+</button>
+            </div>
+          </div>
+
+          <div class="plastic-card" data-impact="3">
+            🍱 Food Cover
+            <div class="counter">
+              <button class="minus">−</button><span class="count">0</span><button class="plus">+</button>
+            </div>
+          </div>
+
+          <div class="plastic-card" data-impact="8">
+            🚚 Online Package
+            <div class="counter">
+              <button class="minus">−</button><span class="count">0</span><button class="plus">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="fw-bold mt-auto">
+          Total Impact: <span id="totalImpact">0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ELECTRICITY -->
+    <div class="col-md-4 d-flex">
+      <div class="card eco-card h-100 d-flex flex-column">
+        <h5>⚡ Electricity</h5>
+
+        <div class="appliances-grid">
+          <div class="appliance-card active">
+            <div class="appliance-power">10</div> 💡 LED
+          </div>
+          <div class="appliance-card">
+            <div class="appliance-power">50</div> 💻 Laptop
+          </div>
+          <div class="appliance-card">
+            <div class="appliance-power">100</div> 📺 TV
+          </div>
+          <div class="appliance-card">
+            <div class="appliance-power">1500</div> ❄️ AC
+          </div>
+          <div class="appliance-card">
+            <div class="appliance-power">150</div> 🧊 Fridge
+          </div>
+          <div class="appliance-card">
+            <div class="appliance-power">500</div> 👕 Washing
+          </div>
+        </div>
+
+        <div class="power-hours mt-3">
+          <label>Hours Used</label>
+          <div class="hours-control">
+            <button>−</button><span>1</span><button>+</button>
+          </div>
+        </div>
+
+        <div class="calculated-box mt-auto">
+          <div>
+            <div>Calculated Units</div>
+            <strong>0.010 kWh</strong>
+          </div>
+          <button class="add-btn">+ Add to Total</button>
+        </div>
+
+        <div class="electricity-total mt-2">
+          Total Bill: <strong id="electricityTotal">0.000</strong> kWh
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- LOWER ROW -->
+  <div class="row g-4 mt-4">
+
+    <div class="col-md-6 d-flex">
+      <div class="card breakdown-card h-100 w-100">
+        <h5>📊 Category Breakdown</h5>
+
+        <div class="breakdown-item">
+          <span>🚲 Transport</span>
+          <span id="transportScore">100</span>
+          <div class="progress"><div id="transportBar" class="progress-bar transport-bar"></div></div>
+        </div>
+
+        <div class="breakdown-item">
+          <span>♻ Plastic</span>
+          <span id="plasticScore">100</span>
+          <div class="progress"><div id="plasticBar" class="progress-bar plastic-bar"></div></div>
+        </div>
+
+        <div class="breakdown-item">
+          <span>⚡ Electricity</span>
+          <span id="electricityScore">100</span>
+          <div class="progress"><div id="electricityBar" class="progress-bar electricity-bar"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 d-flex">
+      <div class="card eco-tips-card h-100 w-100">
+        <h5>💡 Eco Tips for You</h5>
+        <p id="ecoTipText">Click “Save Today” to get personalized eco tips.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- WEEKLY TREND -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card weekly-card">
+        <div class="d-flex justify-content-between">
+          <h5>📈 Weekly Trend</h5>
+          <small>Average: <span id="weeklyAverage">100</span></small>
+        </div>
+        <div class="weekly-chart-wrapper">
+          <canvas id="weeklyChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- App JS -->
+<script src="script.js"></script>
+
+</body>
+</html>

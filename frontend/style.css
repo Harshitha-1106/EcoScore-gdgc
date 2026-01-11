@@ -1,0 +1,172 @@
+:root {
+  --primary-green: #2ecc71;
+  --light-green: #f2fdf6;
+  --card-bg: #ffffff;
+  --shadow: rgba(0,0,0,0.05);
+}
+
+body {
+  background: var(--light-green);
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* CARDS */
+.card {
+  border: none;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px var(--shadow);
+}
+
+.eco-card {
+  padding: 18px;
+}
+
+/* SCORE */
+.score-card {
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.score-circle {
+  width: 160px;
+  height: 160px;
+  border: 12px solid var(--primary-green);
+  border-radius: 50%;
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: bold;
+  color: var(--primary-green);
+}
+
+/* STREAK */
+.streak-card {
+  padding: 18px;
+}
+
+.streak-icon {
+  font-size: 26px;
+}
+
+.progress {
+  height: 6px;
+  border-radius: 10px;
+  background: #e5f6ec;
+}
+
+.progress-bar {
+  width: 14%;
+  background: var(--primary-green);
+}
+
+/* TRANSPORT */
+.map-box {
+  height: 120px;
+  background: #eefaf4;
+  border-radius: 12px;
+}
+
+/* PLASTIC */
+.plastic-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.plastic-card {
+  border: 1px solid #e0ece7;
+  border-radius: 14px;
+  padding: 10px;
+  text-align: center;
+}
+
+.counter {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+/* ELECTRICITY */
+.appliances-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.appliance-card {
+  background: #f7f9f8;
+  padding: 10px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.appliance-card.active {
+  border: 2px solid var(--primary-green);
+}
+
+.calculated-box {
+  display: flex;
+  justify-content: space-between;
+  background: #eefaf4;
+  padding: 14px;
+  border-radius: 14px;
+}
+
+.add-btn {
+  background: var(--primary-green);
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+/* BREAKDOWN */
+.breakdown-item {
+  margin-bottom: 12px;
+}
+
+.transport-bar { width: 100%; background: #22c55e; }
+.plastic-bar { width: 100%; background: #3b82f6; }
+.electricity-bar { width: 100%; background: #f59e0b; }
+
+/* WEEKLY */
+.weekly-card {
+  padding: 18px;
+}
+/* ===============================
+   FIX TOP 2 CARD ALIGNMENT
+   =============================== */
+
+.row.g-4 > .col-md-6 {
+  display: flex;
+}
+
+.breakdown-card,
+.eco-tips-card {
+  flex: 1;
+}
+
+/* ===============================
+   FIX WEEKLY TREND HEIGHT
+   =============================== */
+
+.weekly-chart-wrapper {
+  height: 180px;          /* PERFECT dashboard height */
+  position: relative;
+}
+
+.weekly-chart-wrapper canvas {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+/* Prevent weekly card from growing */
+.weekly-card {
+  padding-bottom: 20px;
+}
+
